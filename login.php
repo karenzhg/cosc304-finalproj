@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login Screen</title>
+<title>Orinthego</title>
 </head>
 <body>
+
+<h2 align="left"><a href="index.php">Home</a> | <a href="listprod.php"> Browse</a> | <a href="showcart.php">Your Shopping Cart</a></h2>
 
 <div style="margin:0 auto;text-align:center;display:inline">
 
 <h3>Please Login to System</h3>
 
+<?php
+if ($_SESSION['authenticatedUser']  != null){
+	echo("<li><a href=\"account.php\">" + username + "\'s Account</a></li>");
+	echo("<li><a href=\"admin.php\">Admin</a></li>");
+	echo("<li><a href=\"logout.php\">Logout</a></li>");
+}
+else
+	//echo("<li><a href=\"login.php\" class=\"active\">Login</a></li>");
+
+?>
+
 <?php 
-    session_start();  
+if(empty(session_id()) && !headers_sent()){
+	session_start();
     if ($_SESSION['loginMessage']  != null)	
         echo ("<p>" . $_SESSION['loginMessage'] . "</p>");
+}
 ?>
 
 <br>

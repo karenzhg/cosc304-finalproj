@@ -25,6 +25,14 @@
 
 <?php     
     // TODO: Display user name that is logged in (or nothing if not logged in)	
+    if ($_SESSION['authenticatedUser']  != null){
+        echo("<li><a href=\"account.php\">" + userName + "\'s Account</a></li>");
+        echo("<li><a href=\"admin.php\">Admin</a></li>");
+        echo("<li><a href=\"logout.php\">Logout</a></li>");
+    }
+    else
+      //  echo("<li><a href=\"login.php\" class=\"active\">Login</a></li>");
+    
 ?>
 </body>
 </head>

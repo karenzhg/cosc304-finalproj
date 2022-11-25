@@ -1,11 +1,14 @@
 <?php 
-    session_start();          
+if(empty(session_id()) && !headers_sent()){
+	session_start();          
     $authenticatedUser = validateLogin();
     
     if ($authenticatedUser != null)
         header('Location: index.php');      		// Successful login
     else
         header('Location: login.php');	             // Failed login - redirect back to login page with a message     
+    
+}
     
 	function validateLogin()
 	{	  
@@ -22,8 +25,12 @@
 		$con = sqlsrv_connect($server, $connectionInfo);
 		
 		// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-		$sql = "";		
-		$retStr = null;
+		
+		$sql = "SELECT * FROM Customer WHERE userId = ? and password = ?";		
+		$pstmt = sqlsrv_query($con, $sql, array($user,$pw));
+
+		if($retStr.next())
+		$retStr = $user;
 		
 		sqlsrv_free_stmt($pstmt);
 		sqlsrv_close($con);

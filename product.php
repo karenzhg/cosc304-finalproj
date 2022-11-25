@@ -46,7 +46,7 @@
 
 // TODO: Retrieve any image stored directly in database. Note: Call displayImage.php with product id as parameter.
 
-    echo("<br><img src='/displayImage.php?id=" . $prodId . "'/>");
+    echo("<img src='/displayImage.php?id=" . $prodId . "'/>");
 
 // TODO: Add links to Add to Cart and Continue Shopping
 

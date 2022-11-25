@@ -8,7 +8,8 @@
 <?php 
 // TODO: Include files auth.php and include/db_credentials.php
 include 'include/db_credentials.php';
-#include 'auth.php';
+if(empty(session_id()) && !headers_sent())
+    include 'auth.php';
 
 $host = "cosc304_sqlserver";   
 $database = "orders";
@@ -26,18 +27,17 @@ if( $con === false ) {
 // TODO: Write SQL query that prints out total order amount by day
 echo("<h3>Administrator Sales Report by Day</h3>");
 
-$sql = "SELECT orderDate, totalAmount FROM ordersummary ORDER BY orderDate";
+$sql = "SELECT orderDate, SUM(totalAmount) FROM ordersummary GROUP BY orderDate";
 
 $results = sqlsrv_query($con, $sql, array());
 echo("<table border=1>");
 echo("<tr><th>OrderDate</th><th>Total Order Amount</th></tr>");
 while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
 	$orderDate = "";
-	if($row['orderDate'] != null && $row['totalAmount'] > 0){
+	if($row['orderDate'] != null){
 		$orderDate = date_format($row['orderDate'], "Y-m-d H:i:s");
-        echo("<tr><td>" . $orderDate . "</td><td> $" . $row['totalAmount'] . "</td></tr>");
 	}
-	
+	echo("<tr><td>" . $orderDate . "</td><td> $" . $row['totalAmount'] . "</td></tr>");
 }
 echo("</table>");
 /** Close connection **/
