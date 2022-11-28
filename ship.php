@@ -37,7 +37,7 @@
 			$include = true;
 		}
 	}
-	if(!$include){
+	if($include=false){
 		echo("Invalid order ID<br>");
 	}
 	else{
@@ -114,7 +114,7 @@
 			}
 			else{
 				// TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
-				echo("Insufficient Quantity. Transaction Canceled");
+				echo("Insufficient Quantity for Product ID: ". $prodList[$i]." Transaction Canceled");
 				$update=false;
 				break;
 			}
