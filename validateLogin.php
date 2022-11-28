@@ -5,8 +5,8 @@ if(empty(session_id()) && !headers_sent()){
     
     if ($authenticatedUser != null)
         header('Location: index.php');      		// Successful login
-    else
-        header('Location: login.php');	             // Failed login - redirect back to login page with a message     
+    // else
+    //     header('Location: login.php');	             // Failed login - redirect back to login page with a message     
     
 }
     
@@ -29,8 +29,10 @@ if(empty(session_id()) && !headers_sent()){
 		$sql = "SELECT * FROM Customer WHERE userId = ? and password = ?";		
 		$pstmt = sqlsrv_query($con, $sql, array($user,$pw));
 
-		if($retStr.next())
-		$retStr = $user;
+		while($row = sqlsrv_fetch_array($pstmt, SQLSRV_FETCH_ASSOC)){
+			if($row['customerId'] != null)
+			$retStr = $user;
+		}
 		
 		sqlsrv_free_stmt($pstmt);
 		sqlsrv_close($con);

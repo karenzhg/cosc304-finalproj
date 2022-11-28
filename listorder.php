@@ -43,7 +43,7 @@ Useful code for formatting currency:
 **/
 
 /** Write query to retrieve all order headers **/
-$sql = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE totalAmount > 0";
+$sql = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId";
 $results = sqlsrv_query($con, $sql, array());
 echo("<tr align=left><td colspan=5><table border=1><th>Order ID</th><th>Order Date</th><th>Customer ID</th><th>Customer Name</th><th>Total Amount</th></tr>");
 while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {

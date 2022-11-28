@@ -27,18 +27,18 @@ if( $con === false ) {
 // TODO: Write SQL query that prints out total order amount by day
 echo("<h3>Administrator Sales Report by Day</h3>");
 
-#$sql = "SELECT YEAR(orderDate) AS year, MONTH(orderDate) AS month, DAY(orderDate) AS day, SUM(totalAmount) AS sumTotal FROM ordersummary GROUP BY year, month, day HAVING SUM(totalAmount) > 0 ORDER BY orderDate";
-$sql = "SELECT YEAR(orderDate) AS year, MONTH(orderDate) AS mon, DAY(orderDate) AS day, SUM(totalAmount) AS sumTotal FROM ordersummary GROUP BY YEAR(orderDate), MONTH(orderDate), DAY(orderDate) HAVING SUM(totalAmount) > 0 ORDER BY orderDate";
+$sql = "SELECT CAST(orderDate AS DATE) AS day, SUM(totalAmount) AS sumTotal FROM ordersummary GROUP BY CAST(orderDate AS DATE) HAVING SUM(totalAmount) > 0 ORDER BY CAST(orderDate AS DATE)";
+
 
 $results = sqlsrv_query($con, $sql, array());
 echo("<table border=1>");
 echo("<tr><th>OrderDate</th><th>Total Order Amount</th></tr>");
 while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-	#$orderDate = "";
-	#if($row['orderDate'] != null){
-	#	$orderDate = date_format($row['orderDate'], "Y-m-d");
-	#}
-	echo("<tr><td>" . $row['year'] . "-" . $row['mon'] . "-" . $row['day'] . "</td><td> $" . $row['sumTotal'] . "</td></tr>");
+	$orderDate = "";
+	if($row['day'] != null){
+		$orderDate = date_format($row['day'], "Y-m-d");
+	}
+    echo("<tr><td>" . $orderDate . "</td><td> $" . $row['sumTotal'] . "</td></tr>");
 }
 echo("</table>");
 /** Close connection **/
