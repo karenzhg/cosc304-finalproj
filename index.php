@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    include 'auth.php';
+    //include 'auth.php';
     $user = $_SESSION['authenticatedUser'];
 ?>
 <!DOCTYPE html>
