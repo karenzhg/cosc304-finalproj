@@ -3,7 +3,7 @@
 <head>
 <title>Grocery CheckOut Line</title>
 </head>
-<body>
+<body style="background-color:#f5f2e6">
 
 
 <h2 align="left">
