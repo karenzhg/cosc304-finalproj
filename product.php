@@ -13,7 +13,7 @@
 <head>
 <title>Orinthego - Product Information</title>
 </head>
-<body>
+<body style="background-color:#f5f2e6">
 
 <?php
     $host = "cosc304_sqlserver";   
@@ -46,7 +46,7 @@
 
 // TODO: Retrieve any image stored directly in database. Note: Call displayImage.php with product id as parameter.
 
-    echo("<img src='/displayImage.php?id=" . $prodId . "'/>");
+    //echo("<img src='/displayImage.php?id=" . $prodId . "'/>");
 
 // TODO: Add links to Add to Cart and Continue Shopping
 
