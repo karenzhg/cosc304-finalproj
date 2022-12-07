@@ -19,7 +19,7 @@ session_start();
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Orinthego Grocery Order Processing</title>
 </head>
-<body>
+<body style="background-color:#f5f2e6">
 
 <?php
 include 'include/db_credentials.php';
