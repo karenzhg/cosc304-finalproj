@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
+<body style="background-color:#f5f2e6; color:#032115">
 <?php
 	include 'include/db_credentials.php';
 	$connectionInfo["Database"] = "";
