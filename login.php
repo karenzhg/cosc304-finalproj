@@ -3,7 +3,7 @@
 <head>
 <title>Orinthego</title>
 </head>
-<body>
+<body style="background-color:#f5f2e6">
 
 <h2 align="left"><a href="index.php">Home</a> | <a href="listprod.php"> Browse</a> | <a href="showcart.php">Your Shopping Cart</a></h2>
 
