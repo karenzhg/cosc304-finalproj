@@ -3,7 +3,7 @@
 <head>
 <title>Administrator Page</title>
 </head>
-<body>
+<body style="background-color:#f5f2e6">
 
 <?php 
 // TODO: Include files auth.php and include/db_credentials.php
