@@ -37,7 +37,7 @@
 			$include = true;
 		}
 	}
-	if($include=false){
+	if($include==false){
 		echo("Invalid order ID<br>");
 	}
 	else{
@@ -107,7 +107,7 @@
 		$newQuantity = [];
 		$update=true;
 		for ($i = 0; $i < count($inventoryQuantity); $i++)  {
-			if($quantityOrder[$i]<$inventoryQuantity[$i]){
+			if($quantityOrder[$i]<=$inventoryQuantity[$i]){
 				$newInventory=$inventoryQuantity[$i]-$quantityOrder[$i];
 				$newQuantity[]=$newInventory;
 				echo("Product ID is: ".$prodList[$i]."   "."Quantity in Order is ".$quantityOrder[$i]."   "."Quantity in Inventory is ".$inventoryQuantity[$i].""." "."New Inventory: ".$newInventory."<br>");
@@ -124,6 +124,10 @@
 			for ($i = 0; $i < count($prodList); $i++)  {
 				sqlsrv_query($con, "UPDATE productInventory SET quantity = ? WHERE productId = ?", array($newQuantity[$i], $prodList[$i]));
 			}
+			$sql6= "DELETE FROM orderProduct WHERE orderId = ?";
+			sqlsrv_query($con, $sql6, array($orderId));
+			$sql8= "DELETE FROM orderSummary WHERE orderId = ?";
+			sqlsrv_query($con, $sql8, array($orderId));
 			echo("Shipment successfully processed");
 		}
 		/**
@@ -139,7 +143,7 @@
 	}
 ?>
 
-<h2><a href="shop.html">Back to Main Page</a></h2>
+<h2><a href="http://localhost/index.php">Back to Main Page</a></h2>
 
 </body>
 </html>
