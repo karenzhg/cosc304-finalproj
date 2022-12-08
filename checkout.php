@@ -16,7 +16,7 @@
 
 <form method="get" action="order.php">
 <input type="text" name="customerId" size="50">
-<input type="text" name="password" size="50">
+<input type="password" name="password" size="50">
 <input type="submit" value="Submit"><input type="reset" value="Reset">
 </form>
 
