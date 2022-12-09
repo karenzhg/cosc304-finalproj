@@ -1,3 +1,8 @@
+<?php
+include 'auth.php';
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,46 +10,31 @@
 </head>
 <body style="background-color:#f5f2e6">
 
-<?php 
-// TODO: Include files auth.php and include/db_credentials.php
-include 'include/db_credentials.php';
-if(empty(session_id()) && !headers_sent())
-    include 'auth.php';
-
-$host = "cosc304_sqlserver";   
-$database = "orders";
-$uid = "sa";
-$pw = "304#sa#pw";
-
-$connectionInfo = array("Database"=>$database, "UID"=>$username, "PWD"=>$password, "CharacterSet" => "UTF-8", "TrustServerCertificate"=>"yes");
-$con = sqlsrv_connect($server, $connectionInfo);
-if( $con === false ) {
-	die( print_r( sqlsrv_errors(), true));
-}
-?>
-
 <?php
-// TODO: Write SQL query that prints out total order amount by day
+$webUsername = $_SESSION['authenticatedUser'];
+
 echo("<h3>Administrator Sales Report by Day</h3>");
 
-$sql = "SELECT CAST(orderDate AS DATE) AS day, SUM(totalAmount) AS sumTotal FROM ordersummary GROUP BY CAST(orderDate AS DATE) HAVING SUM(totalAmount) > 0 ORDER BY CAST(orderDate AS DATE)";
+$sql = "select year(orderDate), month(orderDate), day(orderDate), SUM(totalAmount) FROM OrderSummary GROUP BY year(orderDate), month(orderDate), day(orderDate)";
+include 'include/db_credentials.php';
+$con = sqlsrv_connect($server, $connectionInfo);
 
-
-$results = sqlsrv_query($con, $sql, array());
-echo("<table border=1>");
-echo("<tr><th>OrderDate</th><th>Total Order Amount</th></tr>");
-while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-	$orderDate = "";
-	if($row['day'] != null){
-		$orderDate = date_format($row['day'], "Y-m-d");
-	}
-    echo("<tr><td>" . $orderDate . "</td><td> $" . $row['sumTotal'] . "</td></tr>");
+/* Try/Catch connection errors */
+if( $con === false ) {
+    die( print_r( sqlsrv_errors(), true));
 }
-echo("</table>");
-/** Close connection **/
-sqlsrv_close($con)
 
+$pstmt = sqlsrv_query($con, $sql);
 
+echo("<table class=\"table\" border=\"1\">");
+echo("<tr><th>Order Date</th><th>Total Order Amount</th>");	
+while(sqlsrv_fetch($pstmt)) {
+    echo("<tr><td>".sqlsrv_get_field($pstmt, 0)."-".sqlsrv_get_field($pstmt, 1)."-".sqlsrv_get_field($pstmt, 2)."</td><td>$".number_format(sqlsrv_get_field($pstmt, 3),2)."</td></tr>");
+}
+echo("</table>");	
+
+sqlsrv_close($con);
 ?>
+
 </body>
 </html>
