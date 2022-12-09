@@ -37,7 +37,7 @@
     $pname = "";
     $pprice = 0;
     if($row = sqlsrv_fetch_array($result1)){
-        $img = "<img src = \"img/" . $prodId . ".jpg\"/>";
+        $img = "<img src = \"img/" . $prodId . ".jpg\" width = 50%/>";
         $pname = str_replace('\'', '%27', $row['productName']);
         $pname = str_replace(' ', '\t', $pname);
         $pprice = $row['productPrice'];
