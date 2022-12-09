@@ -33,7 +33,7 @@
 	$result = sqlsrv_query($con, "SELECT orderId FROM ordersummary");
 	$include = false;
 	if($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-		if($row['orderId'] == $orderId){
+		if($row['orderId'] = $orderId){
 			$include = true;
 		}
 	}
