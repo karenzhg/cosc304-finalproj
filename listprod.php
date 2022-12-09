@@ -12,7 +12,6 @@
 <input type="text" name="productName" size="50">
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
 </br>
-</br>
 <input type="submit" value="Drinks" name = "drinks">  <input type="submit" value="Onigiri" name = "onigiri">  <input type="submit" value="Other" name = "Other">
 </form>
 
