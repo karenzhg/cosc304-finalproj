@@ -2,19 +2,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<style>
-a:link {
-  color: #40b1c9;
-  background-color: transparent;
-  text-decoration: none;
-}
-
-a:visited {
-  color: #012229;
-  background-color: transparent;
-  text-decoration: none;
-}
-</style>
 <title>Orinthego Product List</title>
 </head>
 <body style="background-color:#f5f2e6; color:#032115">
@@ -24,6 +11,9 @@ a:visited {
 <form method="get" action="listprod.php">
 <input type="text" name="productName" size="50">
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
+</br>
+</br>
+<input type="submit" value="Drinks" name = "drinks">  <input type="submit" value="Onigiri" name = "onigiri">  <input type="submit" value="Other" name = "Other">
 </form>
 
 <?php
@@ -38,6 +28,18 @@ a:visited {
 	/** $name now contains the search string the user entered
 	Use it to build a query and print out the results. **/
 	$sql = "SELECT productId, productName, productPrice FROM product WHERE productname LIKE '" . $name ."'";
+
+	if(isset($_GET['drinks'])) {
+		$sql = "SELECT productId, productName, productPrice FROM product WHERE productId < 8 ";
+	}
+
+	if(isset($_GET['onigiri'])) {
+		$sql = "SELECT productId, productName, productPrice FROM product WHERE productId > 7 AND productID < 16";
+	}
+
+	if(isset($_GET['Other'])) {
+		$sql = "SELECT productId, productName, productPrice FROM product WHERE productId > 15";
+	}
 
 	/** Create and validate connection **/
 	$host = "cosc304_sqlserver";   
