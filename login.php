@@ -12,25 +12,14 @@
 <h3>Please Login to System</h3>
 
 <?php
-if ($_SESSION['authenticatedUser']  != null){
-	echo("<li><a href=\"admin.php\">Admin</a></li>");
-	echo("<li><a href=\"logout.php\">Logout</a></li>");
-}
-else
-	echo("<li><a href=\"login.php\" class=\"active\">Login</a></li>");
-
-?>
-
-<?php 
-if(empty(session_id()) && !headers_sent()){
-	session_start();
-    if ($_SESSION['loginMessage']  != null)	
-        echo ("<p>" . $_SESSION['loginMessage'] . "</p>");
+if (isset($_SESSION['loginMessage'])) {
+    echo("<p>" . $_SESSION['loginMessage'] . "</p>");
+    $_SESSION['loginMessage'] = NULL;
 }
 ?>
 
 <br>
-<form name="MyForm" method="post" action="validateLogin.php">
+<form name="MyForm" method=post action="validateLogin.php">
 <table style="display:inline">
 <tr>
 	<td><div align="right"><font face="Arial, Helvetica, sans-serif" size="2">Username:</font></div></td>
@@ -45,8 +34,8 @@ if(empty(session_id()) && !headers_sent()){
 <input class="submit" type="submit" name="Submit2" value="Log In">
 </form>
 
+
 </div>
 
 </body>
 </html>
-

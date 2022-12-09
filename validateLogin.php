@@ -1,49 +1,52 @@
-<?php 
-if(empty(session_id()) && !headers_sent()){
-	session_start();          
-    $authenticatedUser = validateLogin();
-    
-    if ($authenticatedUser != null)
-        header('Location: index.php');      		// Successful login
-    // else
-    //     header('Location: login.php');	             // Failed login - redirect back to login page with a message     
-    
+<?php
+$authenticatedUser = NULL;
+session_start();
+
+$authenticatedUser = validateLogin();
+
+if ($authenticatedUser != NULL) {
+    header('Location: index.php');
+} else {
+    header('Location: login.php');
 }
+?>
+
+<?php
+function validateLogin() {
+    if (!isset($_POST['username']) || !isset($_POST['password'])) {
+        return NULL;
+    }
     
-	function validateLogin()
-	{	  
-	    $user = $_POST["username"];	 
-	    $pw = $_POST["password"];
-		$retStr = null;
+    // Beware db_credentials $username conflict!
+    // db_credentials defines $username which will
+    // override any previous $username on include.
+    $webUsername = $_POST['username'];
+    $webPassword = $_POST['password'];
 
-		if ($user == null || $pw == null)
-			return null;
-		if ((strlen($user) == 0) || (strlen($pw) == 0))
-			return null;
+    if (strlen($webUsername) == 0 || strlen($webPassword) == 0) {
+        return NULL;
+    }
 
-		include 'include/db_credentials.php';
-		$con = sqlsrv_connect($server, $connectionInfo);
-		
-		// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-		
-		$sql = "SELECT * FROM Customer WHERE userId = ? and password = ?";		
-		$pstmt = sqlsrv_query($con, $sql, array($user,$pw));
+    $sql = "SELECT * FROM Customer WHERE userId = ? and password = ?";
+	include 'include/db_credentials.php';
+    $con = sqlsrv_connect($server, $connectionInfo);
+	
+	/* Try/Catch connection errors */
+	if( $con === false ) {
+		die( print_r( sqlsrv_errors(), true));
+    }
+    
+    $pstmt = sqlsrv_query($con, $sql, array($webUsername, $webPassword));
+    $retStr = sqlsrv_fetch_array($pstmt, SQLSRV_FETCH_ASSOC);
 
-		while($row = sqlsrv_fetch_array($pstmt, SQLSRV_FETCH_ASSOC)){
-			if($row['customerId'] != null)
-			$retStr = $user;
-		}
-		
-		sqlsrv_free_stmt($pstmt);
-		sqlsrv_close($con);
-		
-		if ($retStr != null)
-		{	$_SESSION["loginMessage"] = null;
-	       	$_SESSION["authenticatedUser"] = $user;
-		}
-		else
-		    $_SESSION["loginMessage"] = "Could not connect to the system using that username/password.";
+    sqlsrv_close($con);
 
-		return $retStr;
-	}	
+    if ($retStr) {
+        $_SESSION['authenticatedUser'] = $webUsername;
+    } else {
+        $_SESSION['loginMessage'] = "Could not connect to the system using that username/password.";
+    }
+
+    return $retStr;
+}
 ?>
