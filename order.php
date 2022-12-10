@@ -89,21 +89,23 @@ if($include){
 	$orderId = sqlsrv_get_field($pstmt,0);
 	**/
 	
-	$sql3 = "INSERT INTO ordersummary (customerId, totalAmount) OUTPUT INSERTED.orderId VALUES(?, 0);";
-	$pstmt = sqlsrv_query($con, $sql3, array($custId));
+	$sql3 = "INSERT INTO ordersummary (customerId, totalAmount, orderDate) OUTPUT INSERTED.orderId VALUES(?, 0, ?);";
+	$pstmt = sqlsrv_query($con, $sql3, array($custId , date("Y-m-d H:i:s")));
 	if(!sqlsrv_fetch($pstmt)){
 		echo("Error");
 	}
 	$orderId = sqlsrv_get_field($pstmt,0);
 
 /** Insert each item into OrderedProduct table using OrderId from previous INSERT **/
-	foreach ($productList as $id => $prod) {
-		$result5 = sqlsrv_query($con, "INSERT INTO orderproduct VALUES (%d, %s, %d, %f)", array($prod['id'] . $prod['name'] . $prod['quantity'] . $prod['price']));		
+$total = 0;	
+foreach ($productList as $id => $prod) {
+		$pid = intval($prod['id']);
+		$result5 = sqlsrv_query($con, "INSERT INTO orderproduct VALUES (?, ?, ?, ?)", array($orderId , $pid , $prod['quantity'] , $prod['price']));		
+		$total = $total + $prod['quantity'] * $prod['price'];
 	}
 
 /** Update total amount for order record **/
-	sqlsrv_query($con, "UPDATE ordersummary SET totalAmount = (SELECT SUM(price) FROM incart WHERE orderId = ?) WHERE orderId = ?", array($orderId, $orderId));
-	sqlsrv_query($con, "UPDATE ordersummary SET orderDate = ? WHERE orderId = ?", array(date("Y-m-d H:i:s"), $orderId));
+	sqlsrv_query($con, "UPDATE ordersummary SET totalAmount = ? WHERE orderId = ?", array($total, $orderId));
 	
 /** For each entry in the productList is an array with key values: id, name, quantity, price **/
 

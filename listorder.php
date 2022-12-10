@@ -43,7 +43,7 @@ Useful code for formatting currency:
 **/
 
 /** Write query to retrieve all order headers **/
-$sql = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId";
+$sql = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM ordersummary O JOIN customer C ON O.customerId = C.customerId";
 $results = sqlsrv_query($con, $sql, array());
 echo("<tr align=left><td colspan=5><table border=1><th>Order ID</th><th>Order Date</th><th>Customer ID</th><th>Customer Name</th><th>Total Amount</th></tr>");
 while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
@@ -53,7 +53,7 @@ while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
 	}
 	
 	echo("<tr><td>" . $row['orderId'] . "</td><td>" . $orderDate . "</td><td>" . $row['customerId'] . "</td><td>" . $row['firstName'] . " " . $row['lastName'] . "</td><td>$" . $row['totalAmount'] . "</td></tr>");
-	$result2 = sqlsrv_query($con, "SELECT productId, quantity, price FROM orderproduct WHERE orderId = '" . $row['orderId'] ."'", array());
+	$result2 = sqlsrv_query($con, "SELECT productId, quantity, price FROM orderproduct WHERE orderId = ?", array($row['orderId']));
 	
 	echo("<tr align=right><td colspan=5><table border=1><th>Product ID</th><th>Quantity</th><th>Price</th></tr>");
 	/** For each order in the results
