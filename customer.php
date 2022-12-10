@@ -49,7 +49,7 @@ echo("</table></td></tr>");
 echo ("</br>");
 
 //$sql3 = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE C.customerId = ?";
-echo ($user);
+
 if (isset($_GET['userorders'])) {
     $sql3 = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE C.userid = ?";
 $results3 = sqlsrv_query($con, $sql3, array($user));
