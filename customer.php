@@ -49,8 +49,9 @@ echo("</table></td></tr>");
 echo ("</br>");
 
 //$sql3 = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE C.customerId = ?";
+echo ($user);
 if (isset($_GET['userorders'])) {
-    $sql3 = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE O.customerId = 1";
+    $sql3 = "SELECT orderId, orderDate, C.customerId, firstName, lastName, totalAmount FROM orderSummary O JOIN customer C ON O.customerId = C.customerId WHERE C.userid = ?";
 $results3 = sqlsrv_query($con, $sql3, array($user));
 echo("<tr align=left><td colspan=5><table border=1><th>Order ID</th><th>Order Date</th><th>Customer ID</th><th>Customer Name</th><th>Total Amount</th></tr>");
 while ($row = sqlsrv_fetch_array($results3, SQLSRV_FETCH_ASSOC)) {
